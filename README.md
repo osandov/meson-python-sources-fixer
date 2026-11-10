@@ -11,7 +11,7 @@ To use it via [pre-commit](https://pre-commit.com/), add the following to your
 ```yaml
 repos:
 -   repo: https://github.com/osandov/meson-python-sources-fixer
-    rev: v1.0
+    rev: v1.1
     hooks:
     -   id: meson-python-sources-fixer
 ```

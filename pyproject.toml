@@ -1,6 +1,6 @@
 [project]
 name = "meson-python-sources-fixer"
-version = "1.0"
+version = "1.1"
 description = "Linter to list all Python sources in meson.build"
 readme = "README.md"
 license = "MIT"
