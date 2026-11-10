@@ -121,9 +121,6 @@ def find_py_installation(contents: str) -> Optional[str]:
         PY_INSTALLATION_PATTERN, contents, flags=regex.MULTILINE | regex.VERBOSE
     )
     return match.group(1) if match else None
-    if not match:
-        raise LookupError("import('python').find_installation() not found")
-    return match.group(1)
 
 
 SUBDIR_PATTERN = rf"""
