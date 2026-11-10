@@ -5,6 +5,7 @@
 import argparse
 import ast
 import difflib
+import os
 from pathlib import Path
 import sys
 from typing import Dict, Iterable, Literal, Mapping, Optional, Set
@@ -155,7 +156,8 @@ def is_python_source(name: str) -> bool:
 def find_package_sources(source_path: Path, install_path: Path) -> Dict[str, Set[str]]:
     sources = {}
     if (source_path / "__init__.py").exists():
-        for root, dirs, files in source_path.walk():
+        for root_str, dirs, files in os.walk(source_path):
+            root = Path(root_str)
             dirs[:] = [dir for dir in dirs if (root / dir / "__init__.py").exists()]
 
             relative = root.relative_to(source_path)
