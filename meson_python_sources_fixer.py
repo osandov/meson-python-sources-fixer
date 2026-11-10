@@ -251,7 +251,7 @@ def fix_package_meson_build(
         contents,
         flags=regex.MULTILINE | regex.VERBOSE,
     ):
-        if match.group("unrecognized"):
+        if match.group("unrecognized") is not None:
             raise CannotFixError(
                 f"unrecognized {py_installation}.install_sources() syntax"
             )

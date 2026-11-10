@@ -1140,6 +1140,32 @@ py.install_sources(sources, subdir: 'pkg')
             {"pkg": {"a.py", "b.py"}},
         )
 
+    def test_cannot_fix_unrecognized_install_sources_after_newline(self):
+        self.assertRaisesRegex(
+            CannotFixError,
+            "unrecognized",
+            fix_package_meson_build,
+            """\
+sources = ['a.py', 'b.py']
+py.install_sources(
+    sources,
+    subdir: 'pkg',
+)
+""",
+            "py",
+            {"pkg": {"a.py", "b.py"}},
+        )
+
+    def test_cannot_fix_unrecognized_install_sources_at_eof(self):
+        self.assertRaisesRegex(
+            CannotFixError,
+            "unrecognized",
+            fix_package_meson_build,
+            "py.install_sources(",
+            "py",
+            {"pkg": {"a.py", "b.py"}},
+        )
+
     def test_cannot_fix_unrecognized_subdir(self):
         self.assertRaisesRegex(
             CannotFixError,
