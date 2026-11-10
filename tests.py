@@ -152,6 +152,12 @@ subdir('pkg2') #
             ["pkg1", "pkg2"],
         )
 
+    def test_unrecognized_many_escapes(self):
+        # This hangs if the regex backtracks catastrophically.
+        self.assertEqual(
+            find_subdirs("subdir('" + "\\a" * 100 + "', if_found: dep)\n"), []
+        )
+
 
 class TestFindPackageSources(pyfakefs.fake_filesystem_unittest.TestCase):
     def setUp(self):
@@ -1162,6 +1168,28 @@ py.install_sources(
             "unrecognized",
             fix_package_meson_build,
             "py.install_sources(",
+            "py",
+            {"pkg": {"a.py", "b.py"}},
+        )
+
+    def test_cannot_fix_unrecognized_install_sources_long_comment(self):
+        # This hangs if the regex backtracks catastrophically.
+        self.assertRaisesRegex(
+            CannotFixError,
+            "unrecognized",
+            fix_package_meson_build,
+            "py.install_sources(\n    " + "#" * 100 + "\n    sources,\n)\n",
+            "py",
+            {"pkg": {"a.py", "b.py"}},
+        )
+
+    def test_cannot_fix_unrecognized_install_sources_many_escapes(self):
+        # This hangs if the regex backtracks catastrophically.
+        self.assertRaisesRegex(
+            CannotFixError,
+            "unrecognized",
+            fix_package_meson_build,
+            "py.install_sources(\n    '" + "\\a" * 100 + "',\n    sources,\n)\n",
             "py",
             {"pkg": {"a.py", "b.py"}},
         )

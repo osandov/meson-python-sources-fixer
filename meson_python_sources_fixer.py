@@ -80,8 +80,8 @@ def print_diff(
             sys.stdout.write(line)
 
 
-STRING_PATTERN = r"'(?:\\.|[^'])*'"
-COMMENT_PATTERN = r"[#].*"
+STRING_PATTERN = r"'(?:\\.|[^'\\])*'"
+COMMENT_PATTERN = r"[#].*+"
 NON_NEWLINE_WHITESPACE = r"[^\S\n]*"
 WHITESPACE_OR_COMMENT_CAPTURE = r"(?:\s|(?&comment))*"
 WHITESPACE_OR_COMMENT_EOL_CAPTURE = r"[^\S\n]*(?&comment)?$"
