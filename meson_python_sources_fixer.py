@@ -265,7 +265,7 @@ def fix_package_meson_build(
                 raise CannotFixError(
                     f"unrecognized {py_installation}.install_sources() subdir syntax"
                 )
-            subdir = ast.literal_eval(subdir_arg)
+            subdir = str(Path(ast.literal_eval(subdir_arg)))
 
         if subdir in matches:
             raise CannotFixError(

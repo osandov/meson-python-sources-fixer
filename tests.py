@@ -461,6 +461,15 @@ message('goodbye')
             {"pkg": {"__init__.py", "foo.py"}},
         )
 
+    def test_up_to_date_with_unnormalized_subdir(self):
+        for subdir in ("pkg/", "./pkg", "pkg//"):
+            with self.subTest(subdir=subdir):
+                self.assert_ok(
+                    f"py.install_sources('__init__.py', 'foo.py', subdir: '{subdir}')\n",
+                    "py",
+                    {"pkg": {"__init__.py", "foo.py"}},
+                )
+
     def test_create_in_empty(self):
         self.assertEqual(
             fix_package_meson_build("", "py", {"pkg": {"__init__.py", "foo.py"}}),
@@ -564,6 +573,24 @@ py.install_sources(
     'a/__init__.py',
     'a/foo.py',
     subdir: 'pkg/a',
+)
+""",
+        )
+
+    def test_update_sources_unnormalized_subdir(self):
+        self.assertEqual(
+            fix_package_meson_build(
+                "py.install_sources('__init__.py', 'file.dat', subdir: 'pkg/', pure: true)\n",
+                "py",
+                {"pkg": {"__init__.py", "foo.py"}},
+            ),
+            """\
+py.install_sources(
+    '__init__.py',
+    'file.dat',
+    'foo.py',
+    subdir: 'pkg/',
+    pure: true,
 )
 """,
         )
@@ -1236,6 +1263,19 @@ py.install_sources('a.py', subdir: my_subdir)
             """\
 py.install_sources('a.py', subdir: 'pkg')
 py.install_sources('b.py', subdir: 'pkg')
+""",
+            "py",
+            {"pkg": {"a.py", "b.py"}},
+        )
+
+    def test_cannot_fix_duplicate_unnormalized_subdir(self):
+        self.assertRaisesRegex(
+            CannotFixError,
+            "duplicate",
+            fix_package_meson_build,
+            """\
+py.install_sources('a.py', subdir: 'pkg')
+py.install_sources('b.py', subdir: 'pkg/')
 """,
             "py",
             {"pkg": {"a.py", "b.py"}},
