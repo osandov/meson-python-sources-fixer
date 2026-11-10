@@ -1435,5 +1435,5 @@ py.install_sources(sources, subdir: 'pkg')
                 mode="update",
             )
             self.assertFalse(success, "stderr:\n" + stderr.getvalue())
-            self.assertIn("cannot fix meson.build", stderr.getvalue())
+            self.assertIn("error: cannot fix meson.build", stderr.getvalue())
             self.assertEqual(Path("meson.build").read_text(), contents)

@@ -36,7 +36,7 @@ def print_error(s: str, *, color: bool) -> None:
     if color:
         sys.stderr.write("\033[31merror:\033[m " + s + "\n")
     else:
-        print(s, file=sys.stderr)
+        print("error:", s, file=sys.stderr)
 
 
 def print_diff(
