@@ -568,6 +568,27 @@ py.install_sources(
 """,
         )
 
+    def test_delete_nested_py_typed(self):
+        self.assertEqual(
+            fix_package_meson_build(
+                """\
+py.install_sources(
+    'a/__init__.py',
+    'a/py.typed',
+    subdir: 'pkg/a',
+)
+""",
+                "py",
+                {"pkg/a": {"a/__init__.py"}},
+            ),
+            """\
+py.install_sources(
+    'a/__init__.py',
+    subdir: 'pkg/a',
+)
+""",
+        )
+
     def test_sort_subdirs_and_update_sources(self):
         self.assertEqual(
             fix_package_meson_build(

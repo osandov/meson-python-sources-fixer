@@ -150,7 +150,7 @@ def find_subdirs(contents: str) -> Iterable[str]:
 
 
 def is_python_source(name: str) -> bool:
-    return name.endswith(".py") or name.endswith(".pyi") or name == "py.typed"
+    return name.endswith((".py", ".pyi")) or os.path.basename(name) == "py.typed"
 
 
 def find_package_sources(source_path: Path, install_path: Path) -> Dict[str, Set[str]]:
