@@ -28,7 +28,7 @@ repos:
     -   id: debug-statements
     -   id: check-merge-conflict
 -   repo: https://github.com/netromdk/vermin
-    rev: v1.6.0
+    rev: v1.9.2
     hooks:
     -   id: vermin
         args: ['-t=3.8-', '--violations', '--eval-annotations']
